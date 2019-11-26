@@ -26,8 +26,6 @@ export type IComponent = ComponentType<ComponentPropsWithRef<any>> & {
 
 export type IExecOptions = {
   name: string
-  // component?: IComponent
-  // dynamicComponent?: IAsyncComponent
 } & IUpdateOptions
 
 export type IExec = (options?: IExecOptions)=> Promise<IInstance> | null
@@ -38,7 +36,7 @@ export type IModalProps = ModalProps;
 export type IModule = {
   name: string
 }
-& XOR<{ component?: IComponent }, { dynamicComponent?: IAsyncComponent }>
+& XOR<{ component: IComponent }, { dynamicComponent: IAsyncComponent }>
 & IUpdateOptions
 
 export interface IInstance {

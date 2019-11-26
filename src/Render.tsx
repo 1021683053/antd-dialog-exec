@@ -28,7 +28,7 @@ export default class extends React.Component<IProps, IState>{
 
   public contentRef = React.createRef<any>()
 
-  public dom: Element
+  public wdom: Element
 
   public isDynamic: boolean = false
 
@@ -55,7 +55,7 @@ export default class extends React.Component<IProps, IState>{
     }
     const { ContentComponent } = this.state
     const { isDynamic } = this
-    
+
     const defaultWrappedProps = !isDynamic ? ContentComponent.defaultWrappedProps || {} : {}
     const defaultContentProps = !isDynamic ? ContentComponent.defaultProps || {} : {}
 
@@ -71,6 +71,14 @@ export default class extends React.Component<IProps, IState>{
   }
 
   public componentDidMount(){
+    if( !this.isDynamic ) this.mounted();
+  }
+
+  public componentDidUpdate(_, prevState){
+    if( this.isDynamic && !prevState.ContentComponent && this.state.ContentComponent ) this.mounted();
+  }
+
+  public mounted = ()=>{
     const { mounted } = this.props;
     mounted(this);
   }
@@ -85,8 +93,8 @@ export default class extends React.Component<IProps, IState>{
     wdom.style.left = '0';
     wdom.style.top = '0';
     wdom.style.backgroundColor = '#ffffff80';
-    this.dom = document.querySelector(`.${this.props.id} .ant-modal-content`).appendChild( wdom )
-    ReactDOM.render( <Spin style={{ position: 'absolute', width: '100%', height: '100%', left: 0, top: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} spinning={true} />, this.dom)
+    this.wdom = document.querySelector(`.${this.props.id} .ant-modal-content`).appendChild( wdom )
+    ReactDOM.render( <Spin style={{ position: 'absolute', width: '100%', height: '100%', left: 0, top: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} spinning={true} />, wdom)
   }
 
   public destroy = ()=>{
@@ -136,7 +144,7 @@ export default class extends React.Component<IProps, IState>{
       const wrappedProps = Object.assign({}, ContentComponent.defaultWrappedProps || {}, state.wrappedProps)
       const contentProps = Object.assign({}, ContentComponent.defaultProps || {}, state.contentProps)
       this.setState({ ContentComponent, wrappedProps, contentProps }, ()=>{
-        this.dom && this.dom.remove();
+        this.wdom && this.wdom.remove();
       })
     }).catch((err)=>{
       console.error(err)
@@ -144,16 +152,15 @@ export default class extends React.Component<IProps, IState>{
   }
 
   render(){
-    const { state, props } = this
+    const { state, props, isDynamic } = this
 
     const { visible, wrappedProps, contentProps, ContentComponent } = state
     const { id } = props
-    const loading = !ContentComponent
-   
+    const loading = isDynamic && !ContentComponent
 
     return(
         <Modal {...wrappedProps} wrapClassName={id} forceRender={false} visible={visible} afterClose={this.handleAfterClose} >
-          { loading ? <Security moutend={this.securityDidMount} /> : null }
+          { isDynamic ? <Security moutend={this.securityDidMount} /> : null }
           { loading ? <div style={{height: 40}} /> : <ContentComponent {...contentProps} {...this.withDialogProps} ref={this.contentRef} /> }
         </Modal>
     )
@@ -161,7 +168,11 @@ export default class extends React.Component<IProps, IState>{
 }
 
 // 渲染页面
-function Security({ moutend }){
-  useEffect(()=>{ moutend() }, [])
-  return null
+class Security extends React.Component<{ moutend: ()=> void }>{
+  public componentDidMount(){
+    this.props.moutend();
+  }
+  render(){
+    return null
+  }
 }

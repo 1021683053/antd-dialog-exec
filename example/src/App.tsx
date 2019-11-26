@@ -4,8 +4,8 @@ import Dialog, { ExecProvider } from 'antd-dialog-exec'
 
 const modules = [{
   name: 'Simple',
-  component: require('./components/Simple').default,
-  // dynamicComponent: ()=> import('./components/Simple'),
+  // component: require('./components/Simple').default,
+  dynamicComponent: ()=> import('./components/Simple'),
   wrappedProps: {},
 }];
 
