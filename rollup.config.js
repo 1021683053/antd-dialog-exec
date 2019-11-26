@@ -28,6 +28,8 @@ export default {
       include: [ "*.ts+(|x)", "**/*.ts+(|x)" ],
       exclude: [ "*.d.ts", "**/*.d.ts" ],
       rollupCommonJSResolveHack: true,
+      useTsconfigDeclarationDir: true,
+      allowJs: true,
       clean: true
     }),
     commonjs()
