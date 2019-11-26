@@ -30,7 +30,7 @@ const Dialog: IDialog = {
 }
 
 
-export class CommandProvider extends React.Component<IProps, IState>{
+export class ExecProvider extends React.Component<IProps, IState>{
 
   static defaultProps = {
     modules: []
