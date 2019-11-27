@@ -31,6 +31,7 @@ export default class extends React.Component<WithDialogProps & any>{
           dialog.updateWrapped({ confirmLoading: false })
           dialog.destroy()
         }, 3000);
+
       }
     }
     dialog.updateWrapped(wrappedProps)
@@ -70,7 +71,7 @@ export default class extends React.Component<WithDialogProps & any>{
         <Button type='primary' onClick={()=> this.props.dialog.update({ wrappedProps: { title: '动态切换标题' } })}>Title`动态切换标题`</Button>
         <Button type='primary' onClick={()=> this.props.dialog.update({ contentProps: { sex: 'Man' } })}>更新</Button>
 
-        <Button type='primary' onClick={()=> this.props.dialog.exec({ name: 'Simple', wrappedProps: { width: 900 } })}>打开另一个窗口</Button>
+        <Button type='primary' onClick={()=> this.props.dialog.exec({ name: 'Simple', wrappedProps: { width: 900, title: '6666' } })}>打开另一个窗口</Button>
       </Typography>
     )
   }

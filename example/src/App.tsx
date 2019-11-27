@@ -12,7 +12,7 @@ const modules = [{
 class App extends React.Component{
 
   public showModal = async ()=>{
-    const instance = await Dialog.exec({ name: 'Simple', wrappedProps: { title: '99999' } })
+    const instance = await Dialog.exec({ name: 'Simple', wrappedProps: { title: '99999' }, contentProps: {} })
   }
 
   render(){

@@ -84,7 +84,6 @@ export default class extends React.Component<IProps, IState>{
   }
 
   public securityDidMount = () => {
-    console.log(`.${this.props.id}`)
     const wdom = document.createElement('div')
     wdom.className=''
     wdom.style.position = 'absolute';
