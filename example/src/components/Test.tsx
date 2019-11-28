@@ -14,12 +14,6 @@ export default class extends React.Component<WithDialogProps & any>{
     title: '这是一个弹出层',
   }
 
-  public defaultWrappedProps = {
-    width: 600,
-    title: '这是一个弹出层',
-  }
-
-
   public display = ()=>{
     console.log('------------------------')
   }
@@ -28,6 +22,7 @@ export default class extends React.Component<WithDialogProps & any>{
     const { dialog } = this.props
     const wrappedProps = {
       onCancel: ()=>{
+        console.log( '+++++++++++' )
         dialog.destroy()
       },
       onOk: ()=>{
@@ -36,15 +31,18 @@ export default class extends React.Component<WithDialogProps & any>{
           dialog.updateWrapped({ confirmLoading: false })
           dialog.destroy()
         }, 3000);
+
       }
     }
     dialog.updateWrapped(wrappedProps)
   }
 
   render(){
+    console.log(this.props)
     return (
       <Typography>
-        <Title>Introduction</Title>
+        <Title>Introduction {this.props.sex}</Title>
+
         <Paragraph>
           In the process of internal desktop applications development, many different design specs and
           implementations would be involved, which might cause designers and developers difficulties and
@@ -66,6 +64,14 @@ export default class extends React.Component<WithDialogProps & any>{
           (<Text code>Sketch</Text> and <Text code>Axure</Text>), to help people create their product
           prototypes beautifully and efficiently.
         </Paragraph>
+        <Button type='primary' onClick={()=> this.props.dialog.destroy()}>Close</Button>
+        <Divider />
+        <Button type='primary' onClick={()=> this.props.dialog.update({ wrappedProps: { width: 500 } })}>Size`500`</Button>
+        <Divider />
+        <Button type='primary' onClick={()=> this.props.dialog.update({ wrappedProps: { title: '动态切换标题' } })}>Title`动态切换标题`</Button>
+        <Button type='primary' onClick={()=> this.props.dialog.update({ contentProps: { sex: 'Man' } })}>更新</Button>
+
+        <Button type='primary' onClick={()=> this.props.dialog.exec({ name: 'Simple', wrappedProps: { width: 900, title: '6666' } })}>打开另一个窗口</Button>
       </Typography>
     )
   }
